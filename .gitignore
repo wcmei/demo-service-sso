@@ -1,0 +1,44 @@
+#common ignore
+.idea/
+.svn/
+*.iml
+.settings/
+.classpath
+.project
+/lib/
+/logs/
+settings.gradle
+
+#java files ignore
+*.class
+# Package Files #
+*.jar
+*.war
+*.ear
+*.gz
+hs_err_pid*
+
+#maven ignore
+target/
+src/main/webapp/WEB-INF/classes/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+generator.properties
+buildNumber.properties
+.mvn/timing.properties
+# Exclude maven wrapper
+!/.mvn/wrapper/maven-wrapper.jar
+
+#gradle ignore
+.gradle
+/build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+/plugins/mybatis-generator-core/src/test
+/sheep-data/LOG_PATH_IS_UNDEFINEDLOG_FILE_IS_UNDEFINED
+sheep-data/sheep-data-gateway
