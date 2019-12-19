@@ -3,7 +3,8 @@
 <mapper namespace="com.wcmei.demo.service.sso.mapper.PermissionMapper">
 
     <select id="selectPermissionByRoleId" resultType="com.wcmei.demo.service.user.domain.Permission">
-        select * from tb_base_permission where id in (select permission_id from tb_base_role_permission where role_id=#{roleId})
+        select permission_name as permissionName from tb_base_permission
+        where id in (select permission_id from tb_base_role_permission where role_id=#{roleId})
     </select>
 
 </mapper>
