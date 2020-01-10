@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
@@ -37,8 +38,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private OAuthWebResponseExceptionTranslator oAuthWebResponseExceptionTranslator;
 
-     @Autowired
-     private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
     public DataSource dataSource() {
         return dataSource;
@@ -46,20 +47,21 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Bean
     public TokenStore tokenStore() {
-        // 基于 JDBC 实现，令牌保存到数据
-       // return new JdbcTokenStore(dataSource());
-        RedisTokenStore redis = new RedisTokenStore(connectionFactory);
-        return redis;
+        //基于JDBC实现，令牌保存到数据（oauth_access_token）
+        return new JdbcTokenStore(dataSource());
+        //基于Redis实现，令牌保存到数据
+//        RedisTokenStore redis = new RedisTokenStore(connectionFactory);
+//        return redis;
     }
 
     @Bean
     public ClientDetailsService jdbcClientDetails() {
-        // 基于 JDBC 实现，需要事先在数据库配置客户端信息
+        //基于JDBC实现，需要事先在数据库配置客户端信息
         return new JdbcClientDetailsService(dataSource());
     }
 
     @Bean
-    public WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator(){
+    public WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator() {
         return new MssWebResponseExceptionTranslator();
     }
 
@@ -78,9 +80,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 读取客户端配置
-       clients.withClientDetails(jdbcClientDetails());
-
+        clients.withClientDetails(jdbcClientDetails());
+        //存储到数据库
+//        clients.jdbc(dataSource);
     }
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
